@@ -124,7 +124,7 @@ resource "aws_instance" "Kubernetes_Master" {
   }
 
   provisioner "file" {
-    source      = "/home/devopsadmin/.ssh/id_rsa.pub"  # Update this path to your actual public key file path on the Ansible Controller
+    source      = "/home/slaveadmin/.ssh/id_rsa.pub"  # Update this path to your actual public key file path on the Ansible Controller
     destination = "/tmp/id_rsa.pub"
   }
 
@@ -167,7 +167,7 @@ resource "aws_instance" "Kubernetes_Workernode1" {
   }
 
   provisioner "file" {
-    source      = "/home/devopsadmin/.ssh/id_rsa.pub"  # Update this path to your actual public key file path on the Ansible Controller
+    source      = "/home/slaveadmin/.ssh/id_rsa.pub"  # Update this path to your actual public key file path on the Ansible Controller
     destination = "/tmp/id_rsa.pub"
   }
 
@@ -211,7 +211,7 @@ resource "aws_instance" "Kubernetes_Workernode2" {
   }
 
   provisioner "file" {
-    source      = "/home/devopsadmin/.ssh/id_rsa.pub"  # Update this path to your actual public key file path on the Ansible Controller
+    source      = "/home/slaveadmin/.ssh/id_rsa.pub"  # Update this path to your actual public key file path on the Ansible Controller
     destination = "/tmp/id_rsa.pub"
   }
 
