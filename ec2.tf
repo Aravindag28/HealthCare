@@ -137,7 +137,7 @@ provisioner "remote-exec" {
       "sudo chmod 600 /home/ansible-admin/.ssh/authorized_keys"
     ]
   }
-}
+
 
 # Create Instance Kube worker 1
 
@@ -176,7 +176,7 @@ provisioner "remote-exec" {
       "sudo chmod 600 /home/ansible-admin/.ssh/authorized_keys"
     ]
   }
-}
+
 # Create Instance Kube worker 2
 
 resource "aws_instance" "Kubernetes_Workernode2" {
@@ -214,7 +214,7 @@ provisioner "remote-exec" {
       "sudo chmod 600 /home/ansible-admin/.ssh/authorized_keys"
     ]
   }
-}
+
 
 #output the IPs of instances created 
 output "instance_ips" {
