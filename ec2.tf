@@ -104,10 +104,32 @@ resource "aws_instance" "Kubernetes_Master" {
   associate_public_ip_address = true
   subnet_id = aws_subnet.Kubernetessubnet.id
   vpc_security_group_ids = [aws_security_group.Kubernetes.id]
-  key_name = "project"
+  key_name = "Staragile"
 
   tags = {
     Name = "Kubernetes_Master"
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "sudo adduser ansible-admin --disabled-password --gecos ''",
+      "sudo usermod -aG sudo ansible-admin",
+      "echo 'ansible-admin ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/ansible-admin",
+    ]
+  }
+
+  provisioner "file" {
+    source      = "/home/devopsadmin/.ssh/id_rsa.pub"  # Update this path to your actual public key file path on the Ansible Controller
+    destination = "/tmp/id_rsa.pub"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo mkdir -p /home/ansible-admin/.ssh",
+      "sudo mv /tmp/id_rsa.pub /home/ansible-admin/.ssh/authorized_keys",
+      "sudo chown -R ansible-admin:ansible-admin /home/ansible-admin/.ssh",
+      "sudo chmod 700 /home/ansible-admin/.ssh",
+      "sudo chmod 600 /home/ansible-admin/.ssh/authorized_keys"
+    ]
   }
 }
 
@@ -119,10 +141,32 @@ resource "aws_instance" "Kubernetes_Workernode1" {
   associate_public_ip_address = true
   subnet_id = aws_subnet.Kubernetessubnet.id
   vpc_security_group_ids = [aws_security_group.Kubernetes.id]
-  key_name = "project"
+  key_name = "Staragile"
 
   tags = {
     Name = "Kubernetes_Workernode1"
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "sudo adduser ansible-admin --disabled-password --gecos ''",
+      "sudo usermod -aG sudo ansible-admin",
+      "echo 'ansible-admin ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/ansible-admin",
+    ]
+  }
+
+  provisioner "file" {
+    source      = "/home/devopsadmin/.ssh/id_rsa.pub"  # Update this path to your actual public key file path on the Ansible Controller
+    destination = "/tmp/id_rsa.pub"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo mkdir -p /home/ansible-admin/.ssh",
+      "sudo mv /tmp/id_rsa.pub /home/ansible-admin/.ssh/authorized_keys",
+      "sudo chown -R ansible-admin:ansible-admin /home/ansible-admin/.ssh",
+      "sudo chmod 700 /home/ansible-admin/.ssh",
+      "sudo chmod 600 /home/ansible-admin/.ssh/authorized_keys"
+    ]
   }
 }
 
@@ -135,9 +179,31 @@ resource "aws_instance" "Kubernetes_Workernode2" {
   associate_public_ip_address = true
   subnet_id = aws_subnet.Kubernetessubnet.id
   vpc_security_group_ids = [aws_security_group.Kubernetes.id]
-  key_name = "project"
+  key_name = "Staragile"
 
   tags = {
     Name = "Kubernetes_Workernode2"
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "sudo adduser ansible-admin --disabled-password --gecos ''",
+      "sudo usermod -aG sudo ansible-admin",
+      "echo 'ansible-admin ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/ansible-admin",
+    ]
+  }
+
+  provisioner "file" {
+    source      = "/home/devopsadmin/.ssh/id_rsa.pub"  # Update this path to your actual public key file path on the Ansible Controller
+    destination = "/tmp/id_rsa.pub"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo mkdir -p /home/ansible-admin/.ssh",
+      "sudo mv /tmp/id_rsa.pub /home/ansible-admin/.ssh/authorized_keys",
+      "sudo chown -R ansible-admin:ansible-admin /home/ansible-admin/.ssh",
+      "sudo chmod 700 /home/ansible-admin/.ssh",
+      "sudo chmod 600 /home/ansible-admin/.ssh/authorized_keys"
+    ]
   }
 }
