@@ -154,18 +154,18 @@ resource "aws_instance" "Kubernetes_Workernode1" {
   }
 }
 
-provisioner "remote-exec" {
-    inline = [
-      "sudo adduser ansible-admin --disabled-password --gecos ''",
-      "sudo usermod -aG sudo ansible-admin",
-      "echo 'ansible-admin ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/ansible-admin",
-    ]
-  }
+    provisioner "remote-exec" {
+        inline = [
+          "sudo adduser ansible-admin --disabled-password --gecos ''",
+          "sudo usermod -aG sudo ansible-admin",
+          "echo 'ansible-admin ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/ansible-admin",
+        ]
+    }
 
-  provisioner "file" {
-    source      = "/home/devopsadmin/.ssh/id_rsa.pub"  # Update this path to your actual public key file path on the Ansible Controller
-    destination = "/tmp/id_rsa.pub"
-  }
+    provisioner "file" {
+        source      = "/home/devopsadmin/.ssh/id_rsa.pub"  # Update this path to your actual public key file path on the Ansible Controller
+        destination = "/tmp/id_rsa.pub"
+    }
 
   provisioner "remote-exec" {
     inline = [
