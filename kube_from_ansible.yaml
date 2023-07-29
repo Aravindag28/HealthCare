@@ -1,5 +1,4 @@
 - hosts: Kubernetes_Master
-  become: yes
   tasks:
     - name: Copy deployment.yaml to Kubernetes master
       copy:
