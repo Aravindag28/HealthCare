@@ -118,7 +118,7 @@ resource "aws_instance" "Kubernetes_Master" {
     connection {
       type        = "ssh"
       user        = "ubuntu"  # Replace with the appropriate user for your AMI (e.g., "ubuntu" for Amazon Linux)
-      private_key = var.private_key  # Replace with the path to your actual private key file
+      private_key = "/home/slaveadmin/Staragile.pem"  # Replace with the path to your actual private key file
       host        = aws_instance.Kubernetes_Master.public_ip  # Use the public_ip attribute of the EC2 instance
     }
   }
@@ -161,7 +161,7 @@ resource "aws_instance" "Kubernetes_Workernode1" {
     connection {
       type        = "ssh"
       user        = "ubuntu"  # Replace with the appropriate user for your AMI (e.g., "ubuntu" for Amazon Linux)
-      private_key = var.private_key  # Replace with the path to your actual private key file
+      private_key = "/home/slaveadmin/Staragile.pem"  # Replace with the path to your actual private key file
       host        = aws_instance.Kubernetes_Master.public_ip  # Use the public_ip attribute of the EC2 instance
     }
   }
@@ -205,7 +205,7 @@ resource "aws_instance" "Kubernetes_Workernode2" {
     connection {
       type        = "ssh"
       user        = "ubuntu"  # Replace with the appropriate user for your AMI (e.g., "ubuntu" for Amazon Linux)
-      private_key = var.private_key  # Replace with the path to your actual private key file
+      private_key = "/home/slaveadmin/Staragile.pem"  # Replace with the path to your actual private key file
       host        = aws_instance.Kubernetes_Master.public_ip  # Use the public_ip attribute of the EC2 instance
     }
   }
