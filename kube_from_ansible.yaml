@@ -7,7 +7,7 @@
 
     - name: Execute kubectl create command
       shell: |
-        export KUBECONFIG=/etc/kubernetes/kubelet.conf
+        export KUBECONFIG=/etc/kubernetes/admin.conf
         kubectl create -f /tmp/deployment.yaml
       ignore_errors: yes
 
