@@ -1,0 +1,25 @@
+- hosts: kubernetes_master
+  become: yes
+  tasks:
+    - name: Copy deployment.yaml to Kubernetes master
+      copy:
+        src: "{{ workspace }}/deployment.yaml"
+        dest: "/home/ansibleadmin/deployment.yaml"
+      delegate_to: localhost
+
+    - name: Execute kubectl create command
+      shell: kubectl create -f /home/ansibleadmin/deployment.yaml
+      ignore_errors: yes
+
+    - name: Wait for 10 seconds
+      pause:
+        seconds: 10
+
+    - name: Get list of pods and node IPs
+      shell: kubectl get pods -o wide
+      register: pod_list
+      ignore_errors: yes
+
+    - name: Display pod list and node IPs
+      debug:
+        var: pod_list.stdout_lines
