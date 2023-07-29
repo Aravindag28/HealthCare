@@ -3,7 +3,7 @@
   tasks:
     - name: Copy deployment.yaml to Kubernetes master
       copy:
-        src: "{{ workspace }}/deployment.yaml"
+        src: "/home/slaveadmin/workspace/Health-Care/deployment.yaml"
         dest: "/home/ansibleadmin/deployment.yaml"
       delegate_to: localhost
 
