@@ -6,8 +6,8 @@
         dest: "/tmp/deployment.yaml"
 
     - name: Execute kubectl create command
+      become: yes
       shell: |
-        su - ansibleadmin
         export KUBECONFIG=/etc/kubernetes/kubelet.conf
         kubectl create -f /tmp/deployment.yaml
       ignore_errors: yes
