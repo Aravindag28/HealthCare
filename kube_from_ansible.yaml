@@ -3,11 +3,11 @@
     - name: Copy deployment.yaml to Kubernetes master
       ansible.builtin.copy:
         src: "/home/slaveadmin/workspace/Health-Care/deployment.yaml"
-        dest: "/home/ansibleadmin/"
+        dest: "/tmp/deployment.yaml"
       delegate_to: localhost
 
     - name: Execute kubectl create command
-      shell: kubectl create -f /home/ansibleadmin/deployment.yaml
+      shell: kubectl create -f /tmp/deployment.yaml
       ignore_errors: yes
 
     - name: Wait for 10 seconds
