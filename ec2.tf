@@ -109,34 +109,7 @@ resource "aws_instance" "Kubernetes_Master" {
   tags = {
     Name = "Kubernetes_Master"
   }
-  provisioner "remote-exec" {
-    inline = [
-      "sudo adduser ansible-admin --disabled-password --gecos ''",
-      "sudo usermod -aG sudo ansible-admin",
-      "echo 'ansible-admin ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/ansible-admin",
-    ]
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"  # Replace with the appropriate user for your AMI (e.g., "ubuntu" for Amazon Linux)
-      private_key = var.private_key  # Replace with the path to your actual private key file
-      host        = aws_instance.Kubernetes_Master.public_ip  # Use the public_ip attribute of the EC2 instance
-    }
-  }
-
-  provisioner "file" {
-    source      = "/home/slaveadmin/.ssh/id_rsa.pub"  # Update this path to your actual public key file path on the Ansible Controller
-    destination = "/tmp/id_rsa.pub"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo mkdir -p /home/ansible-admin/.ssh",
-      "sudo mv /tmp/id_rsa.pub /home/ansible-admin/.ssh/authorized_keys",
-      "sudo chown -R ansible-admin:ansible-admin /home/ansible-admin/.ssh",
-      "sudo chmod 700 /home/ansible-admin/.ssh",
-      "sudo chmod 600 /home/ansible-admin/.ssh/authorized_keys"
-    ]
-  }
+  
 }
 
 # Create Instance 
@@ -152,34 +125,7 @@ resource "aws_instance" "Kubernetes_Workernode1" {
   tags = {
     Name = "Kubernetes_Workernode1"
   }
-  provisioner "remote-exec" {
-    inline = [
-      "sudo adduser ansible-admin --disabled-password --gecos ''",
-      "sudo usermod -aG sudo ansible-admin",
-      "echo 'ansible-admin ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/ansible-admin",
-    ]
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"  # Replace with the appropriate user for your AMI (e.g., "ubuntu" for Amazon Linux)
-      private_key = var.private_key  # Replace with the path to your actual private key file
-      host        = aws_instance.Kubernetes_Master.public_ip  # Use the public_ip attribute of the EC2 instance
-    }
-  }
-
-  provisioner "file" {
-    source      = "/home/slaveadmin/.ssh/id_rsa.pub"  # Update this path to your actual public key file path on the Ansible Controller
-    destination = "/tmp/id_rsa.pub"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo mkdir -p /home/ansible-admin/.ssh",
-      "sudo mv /tmp/id_rsa.pub /home/ansible-admin/.ssh/authorized_keys",
-      "sudo chown -R ansible-admin:ansible-admin /home/ansible-admin/.ssh",
-      "sudo chmod 700 /home/ansible-admin/.ssh",
-      "sudo chmod 600 /home/ansible-admin/.ssh/authorized_keys"
-    ]
-  }
+ 
 }
 
 
@@ -196,32 +142,5 @@ resource "aws_instance" "Kubernetes_Workernode2" {
   tags = {
     Name = "Kubernetes_Workernode2"
   }
-  provisioner "remote-exec" {
-    inline = [
-      "sudo adduser ansible-admin --disabled-password --gecos ''",
-      "sudo usermod -aG sudo ansible-admin",
-      "echo 'ansible-admin ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/ansible-admin",
-    ]
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"  # Replace with the appropriate user for your AMI (e.g., "ubuntu" for Amazon Linux)
-      private_key = var.private_key  # Replace with the path to your actual private key file
-      host        = aws_instance.Kubernetes_Master.public_ip  # Use the public_ip attribute of the EC2 instance
-    }
-  }
-
-  provisioner "file" {
-    source      = "/home/slaveadmin/.ssh/id_rsa.pub"  # Update this path to your actual public key file path on the Ansible Controller
-    destination = "/tmp/id_rsa.pub"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo mkdir -p /home/ansible-admin/.ssh",
-      "sudo mv /tmp/id_rsa.pub /home/ansible-admin/.ssh/authorized_keys",
-      "sudo chown -R ansible-admin:ansible-admin /home/ansible-admin/.ssh",
-      "sudo chmod 700 /home/ansible-admin/.ssh",
-      "sudo chmod 600 /home/ansible-admin/.ssh/authorized_keys"
-    ]
-  }
+  
 }
