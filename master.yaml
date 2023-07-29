@@ -1,0 +1,33 @@
+- hosts: master
+  become: 'yes'
+  tasks:
+    - name: initialize K8S cluster
+      shell: >-
+        kubeadm init --pod-network-cidr=172.16.0.0/16
+        --apiserver-advertise-address=10.0.1.16
+        --ignore-preflight-errors=NumCPU,Mem
+    - name: create .kube directory
+      file: null
+      path: $HOME/.kube
+      state: directory
+      mode: 493
+    - name: copy admin.conf to user kube config
+      copy: null
+      src: /etc/kubernetes/admin.conf
+      dest: /root/.kube/config
+      remote_src: 'yes'
+    - name: install Pod network
+      become: 'yes'
+      shell: >
+        kubectl apply -f
+        https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml
+        >> pod_network_setup.txt
+
+        kubectl apply -f
+        https://docs.projectcalico.org/v3.8/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml 
+        >> pod_network_setup.txt
+      args:
+        chdir: $HOME
+        creates: pod_network_setup.txt
+      tags:
+        - install_pod_network
