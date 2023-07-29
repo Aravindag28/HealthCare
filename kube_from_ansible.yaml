@@ -6,7 +6,6 @@
         dest: "/tmp/deployment.yaml"
 
     - name: Execute kubectl create command
-      become_user: root
       shell: |
         export KUBECONFIG=/etc/kubernetes/kubelet.conf
         kubectl create -f /tmp/deployment.yaml
