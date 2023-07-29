@@ -3,7 +3,7 @@
     - name: Copy deployment.yaml to Kubernetes master
       copy:
         src: "/home/slaveadmin/workspace/Health-Care/deployment.yaml"
-        dest: "."
+        dest: "/home/ansibleadmin"
       delegate_to: localhost
 
     - name: Execute kubectl create command
