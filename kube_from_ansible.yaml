@@ -7,8 +7,7 @@
 
     - name: Execute kubectl create command
       shell: |
-        sudo echo 'export KUBECONFIG=/etc/kubernetes/kubelet.conf' >> /etc/profile
-        sudo source /etc/profile
+        export KUBECONFIG=/etc/kubernetes/kubelet.conf
         kubectl create -f /tmp/deployment.yaml
       ignore_errors: yes
 
