@@ -7,5 +7,5 @@ variable "aws_secret_key" {
 }
 variable "private_key" {
   description = "SSH private key for EC2 instance access"
-  type = "string"
+  
 }
