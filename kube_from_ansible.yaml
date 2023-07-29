@@ -6,7 +6,7 @@
         dest: "/tmp/deployment.yaml"
 
     - name: Execute kubectl create command
-      become: yes
+      become_user: root
       shell: |
         export KUBECONFIG=/etc/kubernetes/kubelet.conf
         kubectl create -f /tmp/deployment.yaml
@@ -17,7 +17,7 @@
         seconds: 10
 
     - name: Get list of pods and node IPs
-      shell: kubectl get pods -o wide
+      raw: kubectl get pods -o wide
       register: pod_list
       ignore_errors: yes
 
