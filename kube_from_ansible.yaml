@@ -6,7 +6,9 @@
         dest: "/tmp/deployment.yaml"
 
     - name: Execute kubectl create command
-      shell: kubectl create -f /tmp/deployment.yaml
+      shell: |
+        export KUBECONFIG=/etc/kubernetes/kubelet.conf
+        kubectl create -f /tmp/deployment.yaml
       ignore_errors: yes
 
     - name: Wait for 10 seconds
