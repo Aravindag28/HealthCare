@@ -16,7 +16,7 @@
         seconds: 10
 
     - name: Get list of pods and node IPs
-      raw: kubectl get pods -o wide
+      shell: kubectl get pods -o wide
       register: pod_list
       ignore_errors: yes
 
