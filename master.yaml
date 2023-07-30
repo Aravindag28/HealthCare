@@ -5,7 +5,7 @@
       raw: kubeadm init --pod-network-cidr=192.168.0.0/16 --apiserver-advertise-address=172.31.3.15 --ignore-preflight-errors=NumCPU --ignore-preflight-errors=Mem
     
     - name: create .kube directory
-      file: null
+      file: 
         path: $HOME/.kube
         state: directory
         mode: 493
