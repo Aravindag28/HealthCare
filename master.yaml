@@ -2,10 +2,7 @@
   become: 'yes'
   tasks:
     - name: initialize K8S cluster
-      shell: >-
-        kubeadm init --pod-network-cidr=192.168.0.0/16
-        --apiserver-advertise-address=172.31.3.15
-        --ignore-preflight-errors=NumCPU,Mem
+      shell: kubeadm init --pod-network-cidr=192.168.0.0/16 --apiserver-advertise-address=172.31.3.15 --ignore-preflight-errors=NumCPU --ignore-preflight-errors=Mem
     - name: create .kube directory
       file: null
       path: $HOME/.kube
