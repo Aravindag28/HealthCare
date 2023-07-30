@@ -14,7 +14,7 @@
     - name: copy admin.conf to user kube config
       copy: null
       src: /etc/kubernetes/admin.conf
-      dest: /root/.kube/config
+      dest: $HOME/.kube/config
       remote_src: 'yes'
     - name: install Pod network
       become: 'yes'
