@@ -6,15 +6,16 @@
     
     - name: create .kube directory
       file: null
-      path: $HOME/.kube
-      state: directory
-      mode: 493
+        path: $HOME/.kube
+        state: directory
+        mode: 493
 
     - name: copy admin.conf to user kube config
-      copy: null
-      src: /etc/kubernetes/admin.conf
-      dest: $HOME/.kube/config
-      remote_src: 'yes'
+      copy: 
+        src: /etc/kubernetes/admin.conf
+        dest: $HOME/.kube/config
+        remote_src: 'yes'
+    
     - name: install Pod network
       become: 'yes'
       shell: >
