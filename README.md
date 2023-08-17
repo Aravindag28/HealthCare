@@ -28,6 +28,5 @@ This project aims to establish a streamlined DevOps integration pipeline by leve
 
 By implementing this project, we anticipate achieving more efficient and collaborative development practices, ensuring smoother workflows, improved scalability, and better management of the entire software lifecycle.
 
-(https://github.com/Aravindag28/HealthCare/assets/131279507/1e5807db-cf91-42e7-ad3f-e6e04efbfe4c)
 
 
