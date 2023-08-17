@@ -1,0 +1,52 @@
+#Copy Kubernetes Deployment Configuration:
+#This code block targets the host named Kubernetes_Master and performs the following task:
+#It uses the ansible.builtin.copy module to copy a deployment.yaml file from the source path (/home/slaveadmin/workspace/Health-Care/deployment.yaml) 
+#to the destination path on the Kubernetes master host (/tmp/deployment.yaml). 
+#This action is crucial for deploying Kubernetes applications as it ensures that the deployment configuration is available on the master node.
+- hosts: Kubernetes_Master
+  tasks:
+    - name: Copy deployment.yaml to Kubernetes master
+      ansible.builtin.copy:
+        src: "/home/slaveadmin/workspace/Health-Care/deployment.yaml"
+        dest: "/tmp/deployment.yaml"
+
+#Execute Kubernetes Deployment:
+#In this code block, the following steps are taken:
+#The shell module is used to execute commands in a shell on the host.
+#The export KUBECONFIG=/etc/kubernetes/admin.conf command sets the Kubernetes configuration file to be used.
+#The sudo kubectl create -f /tmp/deployment.yaml command uses kubectl to create Kubernetes resources from the deployment.yaml file located in /tmp.
+#The ignore_errors: yes directive is used to continue with the playbook execution even if errors occur during the execution of these commands. 
+#This might be useful in scenarios where the deployment is expected to fail temporarily, but the playbook execution should continue.
+
+    - name: Execute kubectl create command
+      shell: |
+        export KUBECONFIG=/etc/kubernetes/admin.conf
+        sudo kubectl create -f /tmp/deployment.yaml
+      ignore_errors: yes
+
+    - name: Wait for 10 seconds
+      pause:
+        seconds: 10
+
+#Retrieve List of Pods and Node IPs:
+#This code block performs the following actions:
+#The shell module is employed to execute a shell command on the host.
+#The command sudo kubectl get pods -o wide is run using kubectl, fetching information about pods and their associated node IPs with extended details.
+#The result of the command is stored in the variable pod_list using the register directive.
+#The ignore_errors: yes directive is set to allow the playbook to continue execution even if errors occur during the command execution. 
+#This can be useful when the command might fail temporarily, but the playbook should proceed.
+
+    - name: Get list of pods and node IPs
+      shell: sudo kubectl get pods -o wide
+      register: pod_list
+      ignore_errors: yes
+
+#Display Pod List and Node IPs:
+#This code block accomplishes the following task:
+#The debug module is used to display information during playbook execution.
+#The var: pod_list.stdout_lines directive is employed to display the output lines from the previously executed command (retrieving the list of pods and node IPs).
+#This provides a clear view of the pod list and associated node IPs, aiding in troubleshooting or verifying the state of the Kubernetes deployment.
+
+    - name: Display pod list and node IPs
+      debug:
+        var: pod_list.stdout_lines

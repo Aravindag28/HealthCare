@@ -5,6 +5,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .DS_Store
+resume.txt
 ### STS ###
 .apt_generated
 .classpath

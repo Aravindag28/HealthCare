@@ -1,0 +1,42 @@
+#Retrieve and Set Kubernetes Node Join Command:
+#This code block is intended to be executed on the 'Kubernetes_Master' host and performs the following tasks:
+#The `become: yes` directive grants elevated privileges for tasks in this block.
+#The `gather_facts: false` directive indicates that facts about the target host should not be gathered.
+#The task is named "get join command."
+#The `shell` module is used to execute a shell command.
+#The command `kubeadm token create --print-join-command` generates and prints the join command for adding nodes to the Kubernetes cluster.
+#The result of the command is stored in the variable `join_command_raw` using the `register` directive.
+#Another task named "set join command" uses the `set_fact` module to set a fact named `join_command` with the value of the first line of the `stdout_lines` from the previous task's output.
+#In summary, this code block retrieves the join command needed for nodes to join the Kubernetes cluster. 
+#It captures the join command output and stores it as a fact named `join_command`, making it available for later use in the playbook.
+- hosts: Kubernetes_Master
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: get join command
+      shell: kubeadm token create --print-join-command
+      register: join_command_raw
+
+    - name: set join command
+      set_fact:
+        join_command: "{{ join_command_raw.stdout_lines[0] }}"
+
+#Join Nodes to Kubernetes Cluster:
+#This code block is meant to be executed on hosts within the `testnodes` group and performs the following tasks:
+#The `become: yes` directive grants elevated privileges for tasks in this block.
+#The task is named "join cluster."
+#The `shell` module is used to execute a shell command.
+#The command `{{ hostvars['Kubernetes_Master'].join_command }} --ignore-preflight-errors all >> node_joined.txt` is executed. This command retrieves the join command from the `Kubernetes_Master` host using `hostvars` and executes it, instructing nodes to join the cluster while ignoring preflight errors. The output is appended to a file named `node_joined.txt`.
+#The `args` section specifies additional arguments for the task:
+#`chdir: $HOME` changes the current working directory to the user's home directory.
+#`creates: node_joined.txt` ensures the task runs only if the specified file doesn't already exist.
+#In summary, this code block enables nodes in the `testnodes` group to join the Kubernetes cluster using the join command obtained from the `Kubernetes_Master` host. 
+#The command is executed, and the output is logged in a file (`node_joined.txt`). The task is conditioned to run only if the log file doesn't exist.
+- hosts: testnodes
+  become: yes
+  tasks:
+    - name: join cluster
+      shell: "{{ hostvars['Kubernetes_Master'].join_command }} --ignore-preflight-errors all >> node_joined.txt"
+      args:
+        chdir: $HOME
+        creates: node_joined.txt

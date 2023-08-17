@@ -1,3 +1,5 @@
+#On all the worker nodes of Kubernetes , we are disabling SWAP command , disabling SELinux , installing Docker
+#Starting Docker service , Ensure IPv6 Bridge Filtering is Enabled , Add Kubernetes YUM Repository . 
 - hosts: all
   become: yes
   tasks:
@@ -48,6 +50,18 @@
       baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
       gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
       gpgcheck: yes
+      
+#Install and Configure Kubernetes Components on Nodes:
+#Installs kubelet with version 1.21.3.
+#Installs kubeadm with version 1.21.3.
+#Starts the kubelet service and ensures it's enabled.
+#For the 'master' host, installs kubectl with version 1.21.3, allowing downgrades if necessary.
+
+#Configure Kubernetes Nodes:
+#This code block is intended to be used on the 'master' host. It includes tasks that need elevated privileges (become: yes):
+#Installs kubectl with version 1.21.3, allowing downgrades if necessary.
+
+#These code blocks together set up Kubernetes components (kubelet, kubeadm, kubectl) on nodes, ensuring that the environment is prepared for Kubernetes deployment and management.
 
    - name: install kubelet
      yum:

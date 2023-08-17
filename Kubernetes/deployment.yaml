@@ -1,3 +1,5 @@
+#This configuration ensures that the healthcare application is deployed as a single replica, utilizing the specified container image and exposing it on port 8082. 
+#Any updates to the application will be handled by Kubernetes according to the defined deployment strategy.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -35,3 +37,5 @@ spec:
   - nodePort: 32001
     port: 8082
     targetPort: 8082
+#The above code block creates a Kubernetes Service named "healthcare-np-service" for a healthcare application. 
+#The service allows external access via a NodePort on port 32001, forwarding requests to pods labeled "app: healthcare" on their internal port 8082.

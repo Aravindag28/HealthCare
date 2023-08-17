@@ -1,0 +1,76 @@
+#Initialize Kubernetes Cluster:
+#This code block is meant to be executed on the 'master' host and includes the following actions:
+#The become: 'yes' directive grants elevated privileges for tasks in this block.
+#The task is named "initialize K8S cluster."
+#The raw module allows running commands without interpreting them through a shell.
+#The command kubeadm init is executed to initialize the Kubernetes cluster with specific options:
+#--pod-network-cidr=192.168.0.0/16 specifies the CIDR range for the pod network.
+#--apiserver-advertise-address=172.31.3.15 sets the advertised address for the API server.(specify the private IP Address of the Master Node)
+#--ignore-preflight-errors=NumCPU and --ignore-preflight-errors=Mem are used to bypass specific preflight checks related to CPU and memory.
+#This process initializes the Kubernetes cluster on the 'master' node, configuring it with the provided parameters and ignoring specific preflight errors to ensure a successful initialization.
+- hosts: master
+  become: 'yes'
+  tasks:
+    - name: initialize K8S cluster
+      raw: kubeadm init --pod-network-cidr=192.168.0.0/16 --apiserver-advertise-address=172.31.3.15 --ignore-preflight-errors=NumCPU --ignore-preflight-errors=Mem
+
+#Create .kube Directory:
+#This code block performs the following task:
+#The file module is utilized to manage files and directories.
+#The task is named "create .kube directory."
+#The path: $HOME/.kube directive specifies the path to the directory to be created. The use of $HOME ensures it is created in the user's home directory.
+#The state: directory indicates that a directory should be created at the specified path.
+#mode: 493 sets the permissions (octal notation) for the created directory.
+#The purpose of this task is to create the .kube directory in the user's home directory, which is commonly used to store Kubernetes configuration files and related settings.  
+    - name: create .kube directory
+      file: 
+        path: $HOME/.kube
+        state: directory
+        mode: 493
+
+#Copy admin.conf to User's Kubernetes Configuration:
+#This code block accomplishes the following task:
+#The copy module is employed to copy files.
+#The task is named "copy admin.conf to user kube config."
+#The src: /etc/kubernetes/admin.conf directive specifies the source path of the admin.conf file.
+#The dest: $HOME/.kube/config directive specifies the destination path where the admin.conf file will be copied. The use of $HOME ensures it's copied to the user's home directory under the .kube subdirectory with the name config.
+#remote_src: 'yes' indicates that the source file is located on the remote host.
+#The purpose of this task is to copy the admin.conf file, which contains Kubernetes configuration details, to the user's Kubernetes configuration directory ($HOME/.kube/config). 
+#This enables the user to interact with the Kubernetes cluster using the kubectl command-line tool.
+    - name: copy admin.conf to user kube config
+      copy: 
+        src: /etc/kubernetes/admin.conf
+        dest: $HOME/.kube/config
+        remote_src: 'yes'
+
+#Install Pod Network with Calico:
+#This code block performs the following steps:
+#The task is named "install Pod network."
+#The `become: 'yes'` directive grants elevated privileges for the task.
+#The `shell` module is used to execute shell commands.
+#Two `kubectl apply -f` commands are executed, applying Kubernetes manifest files for Calico networking:
+#The first command applies RBAC (Role-Based Access Control) settings from `rbac-kdd.yaml`.
+#The second command applies Calico networking settings from `calico.yaml`.
+#`>> pod_network_setup.txt` appends the command output to a file named `pod_network_setup.txt`.
+#`args` specifies additional arguments for the task:
+#`chdir: $HOME` changes the current working directory to the user's home directory.
+#`creates: pod_network_setup.txt` ensures the task runs only if the specified file doesn't already exist.
+#The `tags` section assigns a tag `install_pod_network` to the task, which can be useful for selective task execution using tags.
+#In summary, this task installs a pod network using Calico for the Kubernetes cluster. 
+#It applies RBAC settings and Calico networking configurations through `kubectl apply`, capturing the command output in a log file (`pod_network_setup.txt`).
+#The task is conditioned to run only if the log file doesn't exist and is tagged for potential selective execution.    
+    - name: install Pod network
+      become: 'yes'
+      shell: >
+        kubectl apply -f
+        https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml
+        >> pod_network_setup.txt
+
+        kubectl apply -f
+        https://docs.projectcalico.org/v3.8/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml 
+        >> pod_network_setup.txt
+      args:
+        chdir: $HOME
+        creates: pod_network_setup.txt
+      tags:
+        - install_pod_network
