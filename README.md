@@ -9,6 +9,9 @@
 - Jenkins
 - Kubernetes
 
+## FLOW DIAGRAM
+![Screenshot (225)](https://github.com/Aravindag28/HealthCare/assets/131279507/02b50623-ebdf-4d9a-acc4-8897de945c05)
+
 ## Description
 This project aims to establish a streamlined DevOps integration pipeline by leveraging various tools, including Git, Jenkins, Docker, Ansible, Terraform, and Kubernetes. The primary goal is to automate the end-to-end process, starting from code updates on the master branch to facilitate seamless tasks such as code checkout, compilation, packaging, and containerization. In addition, the project involves the use of Terraform and Ansible to set up a straightforward test-cluster environment. Kubernetes is employed to automate deployments to test servers, with the capability to extend this deployment process to production clusters. To ensure comprehensive monitoring, Prometheus is configured for data collection, while Grafana provides insightful visualizations.
 
